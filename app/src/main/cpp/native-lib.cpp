@@ -6,14 +6,6 @@
 #include <opencv2/video.hpp>
 #include "android/bitmap.h"
 
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_edu_aplicacionnativa_MainActivity_stringFromJNI(
-        JNIEnv* env,
-        jobject /* this */) {
-    std::string hello = "Hola desde C++";
-    return env->NewStringUTF(hello.c_str());
-}
-
 void bitmapToMat(JNIEnv * env, jobject bitmap, cv::Mat &dst, jboolean needUnPremultiplyAlpha){
     AndroidBitmapInfo info;
     void* pixels = 0;
