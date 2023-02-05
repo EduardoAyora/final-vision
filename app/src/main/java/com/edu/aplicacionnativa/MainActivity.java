@@ -27,6 +27,10 @@ import android.widget.TextView;
 
 import com.edu.aplicacionnativa.databinding.ActivityMainBinding;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public class MainActivity extends AppCompatActivity implements ImageReader.OnImageAvailableListener {
@@ -50,6 +54,24 @@ public class MainActivity extends AppCompatActivity implements ImageReader.OnIma
         } else {
             //TODO show live camera footage
             setFragment();
+        }
+
+        File cascadeFile = new File(getCacheDir(), "haarcascade_frontalface_alt2.xml");
+        if (!cascadeFile.exists()) {
+            try {
+                InputStream inputStream = getAssets().open("haarcascade_frontalface_alt2.xml");
+                FileOutputStream outputStream = new FileOutputStream(cascadeFile);
+                byte[] buffer = new byte[2048];
+                int bytesRead = -1;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                inputStream.close();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            iniciarDetector(cascadeFile.getPath());
         }
     }
 
@@ -208,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements ImageReader.OnIma
         }
     }
 
+    public native void iniciarDetector(String filePath);
     public native void aEscalaGrises(Bitmap in, Bitmap out);
 }
 

@@ -4,7 +4,13 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/dnn.hpp>
 #include <opencv2/video.hpp>
+#include <fstream>
 #include "android/bitmap.h"
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/objdetect/objdetect.hpp>
+#include <opencv2/features2d/features2d.hpp>
+
+// #include <opencv2/xfeatures2d/nonfree.hpp>
 
 void bitmapToMat(JNIEnv * env, jobject bitmap, cv::Mat &dst, jboolean needUnPremultiplyAlpha){
     AndroidBitmapInfo info;
@@ -96,16 +102,57 @@ void matToBitmap(JNIEnv * env, cv::Mat src, jobject bitmap, jboolean needPremult
     }
 }
 
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+#include <ctime>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgcodecs/imgcodecs.hpp>
+#include <opencv2/video/video.hpp>
+#include <opencv2/videoio/videoio.hpp>
+#include <opencv2/features2d/features2d.hpp>
+
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+using namespace cv;
+
+CascadeClassifier detector;
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_edu_aplicacionnativa_MainActivity_iniciarDetector(
+        JNIEnv* env,
+        jobject /* this */,
+        jstring jfilePath) {
+
+    const char * jname = env->GetStringUTFChars(jfilePath, NULL);
+    string filePath(jname);
+    detector.load(filePath);
+}
+
 extern "C" JNIEXPORT void JNICALL
 Java_com_edu_aplicacionnativa_MainActivity_aEscalaGrises(
         JNIEnv* env,
         jobject /* this */,
         jobject bitmapIn,
         jobject bitmapOut) {
+
+    vector<Rect> rostros;
+    Point centro;
+
     cv::Mat src;
     bitmapToMat(env, bitmapIn, src, false);
     //cv::flip(src, src, 0);
     cv::Mat tmp;
     cv::cvtColor(src, tmp, cv::COLOR_BGR2GRAY);
+
+    detector.detectMultiScale(tmp, rostros);
+    for(int i=0;i<rostros.size();i++) {
+        centro = Point(rostros[i].x+rostros[i].width/2, rostros[i].y+rostros[i].height/2);
+        ellipse(tmp, centro, Size(rostros[i].width/2, rostros[i].height/2), 0, 0, 360, Scalar(33), 3);
+    }
+
     matToBitmap(env, tmp, bitmapOut, false);
 }
