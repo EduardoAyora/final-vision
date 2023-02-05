@@ -144,15 +144,14 @@ Java_com_edu_aplicacionnativa_MainActivity_aEscalaGrises(
 
     cv::Mat src;
     bitmapToMat(env, bitmapIn, src, false);
-    //cv::flip(src, src, 0);
-    cv::Mat tmp;
-    cv::cvtColor(src, tmp, cv::COLOR_BGR2GRAY);
 
-    detector.detectMultiScale(tmp, rostros);
-    for(int i=0;i<rostros.size();i++) {
-        centro = Point(rostros[i].x+rostros[i].width/2, rostros[i].y+rostros[i].height/2);
-        ellipse(tmp, centro, Size(rostros[i].width/2, rostros[i].height/2), 0, 0, 360, Scalar(33), 3);
+    if (!detector.empty()) {
+        detector.detectMultiScale(src, rostros);
+        for(int i=0;i<rostros.size();i++) {
+            centro = Point(rostros[i].x+rostros[i].width/2, rostros[i].y+rostros[i].height/2);
+            ellipse(src, centro, Size(rostros[i].width/2, rostros[i].height/2), 0, 0, 360, Scalar(33), 3);
+        }
     }
 
-    matToBitmap(env, tmp, bitmapOut, false);
+    matToBitmap(env, src, bitmapOut, false);
 }
