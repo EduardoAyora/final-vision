@@ -10,9 +10,9 @@ cmake_minimum_required(VERSION 3.18.1)
 project("aplicacionnativa")
 
 set(OpenCV_STATIC on)
-set(OpenCV_DIR /Users/eduayora/Documents/ups/8vo/vision/proyecto_final/OpenCV-android-sdk/sdk/native/jni)
+set(OpenCV_DIR /home/guille/Descargas/opencv-4.6.0-android-sdk/OpenCV-android-sdk/sdk/native/jni)
 find_package(OpenCV REQUIRED)
-include_directories(/Users/eduayora/Documents/ups/8vo/vision/proyecto_final/OpenCV-android-sdk/sdk/native/jni/include/)
+include_directories(/home/guille/Descargas/opencv-4.6.0-android-sdk/OpenCV-android-sdk/sdk/native/jni/include/)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.

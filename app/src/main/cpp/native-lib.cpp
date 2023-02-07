@@ -106,6 +106,7 @@ void matToBitmap(JNIEnv * env, cv::Mat src, jobject bitmap, jboolean needPremult
 #include <cstdlib>
 #include <cmath>
 #include <ctime>
+#include <vector>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgcodecs/imgcodecs.hpp>
@@ -148,8 +149,10 @@ Java_com_edu_aplicacionnativa_MainActivity_aEscalaGrises(
     if (!detector.empty()) {
         detector.detectMultiScale(src, rostros);
         for(int i=0;i<rostros.size();i++) {
-            centro = Point(rostros[i].x+rostros[i].width/2, rostros[i].y+rostros[i].height/2);
-            ellipse(src, centro, Size(rostros[i].width/2, rostros[i].height/2), 0, 0, 360, Scalar(33), 3);
+            //centro = Point(rostros[i].x+rostros[i].width/2, rostros[i].y+rostros[i].height/2);
+            //ellipse(src, centro, Size(rostros[i].width/2, rostros[i].height/2), 0, 0, 360, Scalar(33), 3);
+            //rectangle(src,centro,Scalar(0,0,255),2);
+            rectangle(src,Point(rostros[i].x,rostros[i].y),Point(rostros[i].x+rostros[i].width,rostros[i].y+rostros[i].height),Scalar(0,0,255),2);
         }
     }
 
