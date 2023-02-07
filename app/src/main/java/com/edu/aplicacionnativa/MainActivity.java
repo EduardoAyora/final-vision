@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity implements ImageReader.OnIma
             setFragment();
         }
 
-        File cascadeFile = new File(getCacheDir(), "cascade.xml");
+        File cascadeFile = new File(getCacheDir(), "mask.xml");
         if (!cascadeFile.exists()) {
             try {
-                InputStream inputStream = getAssets().open("cascade.xml");
+                InputStream inputStream = getAssets().open("mask.xml");
                 FileOutputStream outputStream = new FileOutputStream(cascadeFile);
                 byte[] buffer = new byte[2048];
                 int bytesRead = -1;

@@ -144,10 +144,15 @@ Java_com_edu_aplicacionnativa_MainActivity_aEscalaGrises(
     Point centro;
 
     cv::Mat src;
+    cv::Mat gray;
+
+
     bitmapToMat(env, bitmapIn, src, false);
+    cvtColor( src, gray, COLOR_BGR2GRAY );
+    equalizeHist( gray, gray );
 
     if (!detector.empty()) {
-        detector.detectMultiScale(src, rostros);
+        detector.detectMultiScale(gray, rostros);
         for(int i=0;i<rostros.size();i++) {
             //centro = Point(rostros[i].x+rostros[i].width/2, rostros[i].y+rostros[i].height/2);
             //ellipse(src, centro, Size(rostros[i].width/2, rostros[i].height/2), 0, 0, 360, Scalar(33), 3);
